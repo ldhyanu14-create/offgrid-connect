@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f766e">
+  <title>OffGrid Connect</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>OffGrid Connect</h1>
+    <p class="subtitle">Disaster relief messaging (works offline after one load)</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Send SOS</h2>
+      <label>Details</label>
+      <textarea id="sosText" placeholder="e.g., WATER NEEDED @ GATE 3"></textarea>
+      <button id="sendSOSBtn">Send SOS</button>
+    </section>
+
+    <section class="card">
+      <h2>Send Message</h2>
+      <div class="grid">
+        <div>
+          <label>To (device ID or 0 for broadcast)</label>
+          <input id="toId" type="text" placeholder="0">
+        </div>
+        <div>
+          <label>Priority</label>
+          <select id="prio">
+            <option value="2">SOS (highest)</option>
+            <option value="1" selected>Direct</option>
+            <option value="0">Bulk</option>
+          </select>
+        </div>
+      </div>
+      <textarea id="msgBody" placeholder="Write your message (<= 280 chars)"></textarea>
+      <button id="sendMsgBtn">Queue Message</button>
+    </section>
+
+    <section class="card">
+      <h2>Inbox</h2>
+      <ul id="inbox"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Outbox</h2>
+      <ul id="outbox"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Sync</h2>
+      <div class="grid">
+        <div>
+          <button id="exportBundleBtn">Export Bundle (copy)</button>
+          <textarea id="exportText" readonly placeholder="Bundle will appear here"></textarea>
+        </div>
+        <div>
+          <label>Import Bundle</label>
+          <textarea id="importText" placeholder="Paste bundle text here"></textarea>
+          <button id="importBundleBtn">Import</button>
+        </div>
+      </div>
+      <p class="hint">Tip: Without radios, you can pass bundles by copy/paste or via any offline means (AirDrop/Nearby Share as a text file). We’ll add QR later.</p>
+    </section>
+
+    <section class="card">
+      <h2>Settings</h2>
+      <div class="grid">
+        <div>
+          <label>My Device ID</label>
+          <input id="deviceId" type="text" readonly>
+        </div>
+        <div>
+          <label>Team PIN (for HMAC)</label>
+          <input id="teamPin" type="password" placeholder="optional">
+        </div>
+      </div>
+      <button id="resetBtn" class="danger">Reset Local Data</button>
+    </section>
+  </main>
+
+  <footer>
+    <small>Offline-ready. Last built: 2025-08-09 03:55</small>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js');
+      });
+    }
+  </script>
+</body>
+</html>
