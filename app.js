@@ -2,6 +2,7 @@
 const DB_NAME = 'offgrid-db';
 const DB_VERSION = 1;
 let db;
+var uhjbv = 0
 
 function openDB() {
   return new Promise((resolve, reject) => {
