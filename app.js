@@ -123,21 +123,44 @@ async function queueMsg(){
 }
 
 async function exportBundle(){
-  const me = await myId();
-  const tx = db.transaction(['msgs','acks'],'readonly');
-  const msgs = await tx.objectStore('msgs').getAll();
-  const acks = await tx.objectStore('acks').getAll();
-  const bundle = {
-    from: me,
-    ts: now(),
-    msgs: msgs.filter(m => !m.inbox || m.type===TYPE_SOS),
-    acks: acks.map(a=>a.id)
-  };
-  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(bundle))));
-  exportText.value = encoded;
-  exportText.select();
-  try { document.execCommand('copy'); } catch(e) {}
+  try {
+    // sanity checks for UI elements
+    if (!exportText) {
+      alert('Export area missing. Add a <textarea id="exportText"> in index.html');
+      return;
+    }
+
+    // collect messages + acks
+    const tx = db.transaction(['msgs','acks'],'readonly');
+    const msgs = await tx.objectStore('msgs').getAll();
+    const acks = await tx.objectStore('acks').getAll();
+
+    const me = await myId();
+    const bundle = {
+      from: me,
+      ts: now(),
+      // share: everything not delivered to me (outbox) + any SOS (type=1)
+      msgs: (msgs || []).filter(m => !m.inbox || m.type === TYPE_SOS),
+      acks: (acks || []).map(a => a.id)
+    };
+
+    // show proof it bundled
+    alert(JSON.stringify(bundle, null, 2));
+
+    // safe UTF‑8 base64 encode (works with emojis too)
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(bundle))));
+
+    exportText.value = encoded;
+
+    // try to copy to clipboard for convenience
+    exportText.select();
+    try { document.execCommand('copy'); } catch(_) {}
+  } catch (err) {
+    console.error('exportBundle error:', err);
+    alert('Export failed. Open DevTools Console and read me the red line.');
+  }
 }
+
 
 async function importBundle(){
   try{
@@ -191,11 +214,15 @@ async function resetAll(){
 async function init(){
   db = await openDB();
   deviceIdEl.value = await myId();
-  sendSOSBtn.onclick = queueSOS;
-  sendMsgBtn.onclick = queueMsg;
-  exportBtn.onclick = exportBundle;
-  importBtn.onclick = importBundle;
-  resetBtn.onclick = resetAll;
+
+  sendSOSBtn?.addEventListener('click', queueSOS);
+  sendMsgBtn?.addEventListener('click', queueMsg);
+  exportBtn?.addEventListener('click', exportBundle);
+  importBtn?.addEventListener('click', importBundle);
+  resetBtn?.addEventListener('click', resetAll);
+
   await loadLists();
+}
+
 }
 init();
