@@ -1,0 +1,17 @@
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#0b1416;color:#e6f2f0}
+header{padding:16px 20px;background:#0f766e;color:#e6fffb;position:sticky;top:0}
+h1{margin:0} .subtitle{margin:4px 0 0 0;opacity:.9}
+main{padding:16px;display:grid;gap:16px}
+.card{background:#0d1f23;border:1px solid #134e4a;border-radius:12px;padding:12px}
+label{display:block;margin:6px 0 4px;color:#93e5da}
+textarea,input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #134e4a;background:#07161a;color:#e6f2f0}
+textarea{min-height:80px}
+button{margin-top:8px;padding:10px 14px;border-radius:10px;border:1px solid #115e59;background:#0f766e;color:#e6fffb;font-weight:600;cursor:pointer}
+button:hover{filter:brightness(1.1)}
+button.danger{background:#7a1f2b;border-color:#a52834}
+ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+li{padding:8px;border:1px solid #134e4a;border-radius:8px;background:#051014}
+.grid{display:grid;gap:10px}
+@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+footer{padding:10px 16px;color:#7ebfb6}
+.hint{opacity:.8;font-size:.9em}
