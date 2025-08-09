@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1" onscroll="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f766e">
   <title>OffGrid Connect</title>
@@ -54,6 +54,18 @@
 
     <section class="card">
       <h2>Sync</h2>
+      <section class="card">
+  <h2>Pair devices (WebRTC, no internet after connect)</h2>
+  <button id="rtcMakeOfferBtn">Create Offer</button>
+  <textarea id="rtcOffer" placeholder="Offer (copy this to the other device)"></textarea>
+
+  <label>Paste Answer from other device</label>
+  <textarea id="rtcAnswer" placeholder="Paste answer here"></textarea>
+  <button id="rtcSetAnswerBtn">Set Answer</button>
+
+  <p class="hint">Once connected, messages sync over the P2P link even with internet off (but both devices must remain on the same network/hotspot).</p>
+</section>
+
       <div class="grid">
         <div>
           <button id="exportBundleBtn">Export Bundle (copy)</button>
